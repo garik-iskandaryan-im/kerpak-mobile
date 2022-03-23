@@ -1,0 +1,3 @@
+[submodule "kerpak_submodule"]
+	path = kerpak_submodule
+	url = https://github.com/garik-iskandaryan-im/kerpak_submodule.git
