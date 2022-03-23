@@ -1,0 +1,5 @@
+Dear Operator,
+
+{{displayName}} has regained connection to the internet at {{now}}. The incident lasted from {{disconnectedAt}}, {{disconnectedDate}} - {{connectedAt}}, {{connectedDate}}.
+
+Kerpak Team

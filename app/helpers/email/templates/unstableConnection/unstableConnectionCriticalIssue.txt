@@ -1,0 +1,5 @@
+Dear Operator,
+
+There is an ongoing network stability issue at {kioskName}. The connection has been lost multiple times for the last 45 minutes. 
+
+Kerpak Team

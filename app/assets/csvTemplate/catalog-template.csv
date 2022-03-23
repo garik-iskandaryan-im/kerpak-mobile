@@ -1,0 +1,12 @@
+Name,Description,Ingredients,SKU,Barcode,Category,Price,Weight (grams),Shelf life,Shelf life measure,Calories,Enable unique identifier
+Pumpkin soup,"This is a classic, easy pumpkin soup made with fresh pumpkin that is hick, creamy and full of flavor.","Pumpkin, salt, garlic",4067,4650062596094,Soups,800,200,48,h,1,Yes
+Brownie cheesecake,,,4068,4650062596096,Desserts,800,1000,2,d,2,No
+Hummus,,,4069,4650062596098,Appetizers,800,200,24,h,3,Yes
+Chicken sandwich,,,4070,4650062596100,Sandwiches and wraps,800,200,48,h,4,No
+Pancakes,,,4071,4650062596102,Breakfast,800,200,48,h,5,Yes
+Grilled veggies,,,4072,4650062596104,Sides,800,200,48,h,6,No
+Apple juice,,,4073,4650062596106,Drinks,800,200,48,h,7,Yes
+Oat crackers,,,4074,4650062596108,Lunch,800,200,48,h,,No
+Snickers bar,,,4075,4650062596110,Sweets,800,200,48,h,,Yes
+Roastbeef with broccoli,,,4076,4650062596112,Main Dishes,800,200,48,h,,No
+Greek salad,,,4077,4650062596114,Salads,800,200,48,h,,Yes

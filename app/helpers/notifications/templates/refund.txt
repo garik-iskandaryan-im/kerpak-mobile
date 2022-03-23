@@ -1,0 +1,1 @@
+{refundAmount} {currency} was refunded to your Kerpak account.

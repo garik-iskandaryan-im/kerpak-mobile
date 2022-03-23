@@ -1,0 +1,1 @@
+You have received {balance} {currency} to your Kerpak account.

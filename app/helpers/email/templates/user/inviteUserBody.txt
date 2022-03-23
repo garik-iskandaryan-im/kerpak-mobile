@@ -1,0 +1,10 @@
+{{invitedUser}},
+
+You have been invited to join your project on Kerpak by {{invitedBy}}. To register and access your account go to {emailResetLink} in your browser.
+
+Note that the invitation form will be valid for 2 days.
+
+Should you have any issues accessing your account, contact us at support@kerpaktech.com.
+
+Sincerely,
+Kerpak team

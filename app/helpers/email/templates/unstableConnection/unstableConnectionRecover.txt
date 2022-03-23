@@ -1,0 +1,5 @@
+Dear Operator,
+
+Network connection has been stable for the last 15 minutes at {kioskName}. 
+
+Kerpak Team

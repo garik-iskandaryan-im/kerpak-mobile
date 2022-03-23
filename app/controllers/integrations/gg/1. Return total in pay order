@@ -1,0 +1,34 @@
+1. Return total in pay order
+vs 
+2. Open Create order API
+vs
+3. introduce new API to check sum
+{
+  "kioskId": 40,
+  "sum": 1000,
+  "productItems": [
+    "9780201379624"
+  ]
+}
+
+Change pay order API to get total and checked
+4. 
+{
+  "total": 1000
+  "phone": "string",
+  "kioskId": 0,
+  "sessionId": 0,
+  "useBalance": false,
+  "productItems": [
+    {
+      "barcode": "string",
+      "EAN5": "string"
+    }
+  ]
+}
+return error 403 when total sum is not match
+in succesfull masrk order as succesfull
+add foodprovide into order_productitmes also add it in report;
+Change
+
+

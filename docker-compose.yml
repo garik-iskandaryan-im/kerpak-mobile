@@ -1,0 +1,19 @@
+version: '3.3'
+
+services:
+  server:
+    build: ./server
+    # uncomment network_mode variable to be able to run docker in localhost
+    network_mode: host
+    volumes:
+       - /opt/kerpak/logs/server:/usr/src/app/log
+    ports:
+       - '4000:4000'
+    environment:
+       DATABASE_HOST: ''
+       DATABASE_PASSWORD: ''
+       DATABASE_NAME: ''
+       DATABASE_USERNAME: ''
+
+volumes:
+  db_data: {}

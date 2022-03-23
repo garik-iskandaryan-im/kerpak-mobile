@@ -1,0 +1,5 @@
+Dear Operator,
+
+{{displayName}} has lost connection to the internet for a period of 15 minutes starting at {{disconnectedAt}}, {{date}}.
+
+Kerpak Team
