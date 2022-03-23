@@ -1,1 +1,0 @@
-Your order from {brandName} was delivered.

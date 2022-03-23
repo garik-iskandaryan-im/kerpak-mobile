@@ -1,6 +1,0 @@
-Dear operator,
-
-You have a new delivery order for {kioskName}. 
-The expected delivery date is {expectedDeliveryDate} From {transferTimeFrom} to {transferTimeTo}.
-
-See order details. {link}

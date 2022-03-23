@@ -1,1 +1,0 @@
-Order will be delivered {expectedDeliveryDate} between {transferTimeFrom} and {transferTimeTo}.

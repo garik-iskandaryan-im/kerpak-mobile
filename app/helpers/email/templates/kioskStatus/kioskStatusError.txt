@@ -1,9 +1,0 @@
-
-
-Dear Operator,
-
-{kioskName} has experienced the following issues: 
-{temperatureBody}
-The incident was recorded from {start} to {end}.
-
-Kerpak Team

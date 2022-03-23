@@ -1,1 +1,0 @@
-{dateTime} - registered temperature - {temperature} C

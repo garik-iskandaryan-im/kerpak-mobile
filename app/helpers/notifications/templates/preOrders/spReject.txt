@@ -1,1 +1,0 @@
-Sorry, but your order from {SPName} could not be accepted. Please contact support for help.
