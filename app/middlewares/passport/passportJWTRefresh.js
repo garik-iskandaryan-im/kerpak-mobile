@@ -33,26 +33,26 @@ module.exports.strategy = (settings, secrets) => {
      * @param payload - deserialized token
      * @param next - callback accepting args (done, user, info)
      */
-    const strategy = new JwtStrategy(strategyOptions, function(request, payload, next) {
-        if(payload.type) {
+    const strategy = new JwtStrategy(strategyOptions, function (request, payload, next) {
+        if (payload.type) {
             const logMessage = {
                 type: 'User',
                 token: payload
             };
             switch (payload.type) {
-            /**
-                 * Customer user token authentication
-                 */
-            case CONSTANTS.JSON_TOKEN_TYPES.CONSUMER_AUTH:
-                logMessage.type = 'User';
-                validateUserRequest(request, payload, next);
-                break;
-            default:
-                logMessage.type = 'Invalid Token';
-                log.warn(logMessage, 'passport::jwt-auth invalid');
-                //invalid token
-                next(exception.jsonWebTokenInvalidException(), null);
-                break;
+                /**
+                     * Customer user token authentication
+                     */
+                case CONSTANTS.JSON_TOKEN_TYPES.CONSUMER_AUTH:
+                    logMessage.type = 'User';
+                    validateUserRequest(request, payload, next);
+                    break;
+                default:
+                    logMessage.type = 'Invalid Token';
+                    log.warn(logMessage, 'passport::jwt-auth invalid');
+                    //invalid token
+                    next(exception.jsonWebTokenInvalidException(), null);
+                    break;
             }
         }
     });
@@ -73,7 +73,7 @@ const validateUserRequest = (req, payload, next) => {
         })
         .then((user) => {
             //if user is valid with auth token, continue request
-            if(user) {
+            if (user) {
                 return next(null, user);
             }
             return next(exception.notAuthenticatedException(), null);

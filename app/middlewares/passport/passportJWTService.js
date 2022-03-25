@@ -29,24 +29,24 @@ module.exports.strategy = (secret) => {
      * @param payload - deserialized token
      * @param next - callback accepting args (done, user, info)
      */
-    const strategy = new JwtStrategy(strategyOptions, function(request, payload, next) {
-        if(payload.type) {
+    const strategy = new JwtStrategy(strategyOptions, function (request, payload, next) {
+        if (payload.type) {
             const logMessage = {
                 type: 'Service',
                 token: payload
             };
             switch (payload.type) {
-            case CONSTANTS.JSON_TOKEN_TYPES.CONTROLER:
-                logMessage.type = 'SERVICE:CONTROLER';
-                log.info(logMessage, 'passport::CONTROLER');
-                next();
-                break;
-            default:
-                logMessage.type = 'Invalid Token';
-                log.warn(logMessage, 'passport::CONTROLER invalid');
-                //invalid token
-                next(exception.jsonWebTokenInvalidException(), null);
-                break;
+                case CONSTANTS.JSON_TOKEN_TYPES.CONTROLER:
+                    logMessage.type = 'SERVICE:CONTROLER';
+                    log.info(logMessage, 'passport::CONTROLER');
+                    next();
+                    break;
+                default:
+                    logMessage.type = 'Invalid Token';
+                    log.warn(logMessage, 'passport::CONTROLER invalid');
+                    //invalid token
+                    next(exception.jsonWebTokenInvalidException(), null);
+                    break;
             }
         }
     });

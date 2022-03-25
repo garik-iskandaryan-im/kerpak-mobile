@@ -4,6 +4,7 @@ const pupa = require('pupa');
 const { SES } = require('aws-sdk');
 const log = require('app/helpers/logger');
 const { s3: { KEY, SECRET, SES: { REGION, SOURCE } } } = require('app/settings');
+const { collectDateString } = require('app/helpers/utils');
 
 const ses = new SES({
     secretAccessKey: SECRET,
@@ -56,7 +57,33 @@ const getRegisterVerificationCodeEmailBody = (from, code) => {
     return pupa(template, { from, code });
 };
 
+const getPreOrderEmailBody = (kioskName, link, expectedDeliveryDate, transferTimeFrom, transferTimeTo, timezone) => {
+    const template = fs.readFileSync(path.resolve('app/helpers/email/templates/preOrder/preOrder.txt'), 'utf8').toString();
+    return pupa(template, {
+        kioskName,
+        link,
+        expectedDeliveryDate: collectDateString(expectedDeliveryDate, 'DD.MM.YY', timezone),
+        transferTimeFrom: collectDateString(transferTimeFrom, 'HH:mm', timezone),
+        transferTimeTo: collectDateString(transferTimeTo, 'HH:mm', timezone),
+    });
+};
+
+const getPreOrderDeclineEmailBody = (kioskName, link) => {
+    const template = fs.readFileSync(path.resolve('app/helpers/email/templates/preOrder/decline.txt'), 'utf8').toString();
+    return pupa(template, {
+        kioskName,
+        link,
+    });
+};
+
+const getIvideonEmailBody = () => {
+    return fs.readFileSync(path.resolve('app/helpers/email/templates/ivideon/error.txt'), 'utf8').toString();
+};
+
 module.exports = {
     sendEmail,
     getRegisterVerificationCodeEmailBody,
+    getPreOrderEmailBody,
+    getPreOrderDeclineEmailBody,
+    getIvideonEmailBody
 };

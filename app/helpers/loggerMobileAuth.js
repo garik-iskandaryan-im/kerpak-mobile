@@ -32,12 +32,12 @@ module.exports.error = (err, req, msg) => {
     console.log('errObject', errObject);
     return new Promise((resolve, reject) => {
         try {
-            if(log.error) {
+            if (log.error) {
                 log.error(errObject, msg);
             }
             return resolve();
         }
-        catch(err) {
+        catch (err) {
             return reject(err);
         }
     });

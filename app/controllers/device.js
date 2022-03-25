@@ -1,99 +1,55 @@
+const Got = require('got');
 const {
     kiosks: Kiosks,
+    consumers: Consumers,
     kioskSessions: KioskSessions,
 } = require('app/models/models');
 const { device: deviceValidator } = require('app/schemes');
-const { isSchemeValidSync } = require('app/helpers/validate');
+const { isSchemeValid } = require('app/helpers/validate');
 const kioskAdapter = require('app/helpers/kiosk');
 const log = require('app/helpers/logger');
+const loggerValidations = require('app/helpers/loggerValidations');
 const Ivideon = require('app/helpers/ivideon');
 const { getTeltonikaHost } = require('app/services/teltonika');
-const deviceManger = require('app/deviceManager/deviceManager.js');
-
-module.exports.temperature = async (req, res) => {
-    const ip = req.query.ip;
-    const { isValid, errors } = isSchemeValidSync(deviceValidator.get, { ip });
-    if (!isValid) {
-        log.error(errors, 'device::controller::getTemperature');
-        return res.status(400).json({ message: 'validation failed' });
-    }
-    const data = await kioskAdapter.getTemperature(ip);
-    return res.json(data);
-
-};
-
-module.exports.status = async (req, res) => {
-    try {
-        const id = Number(req.params.id);
-        const kiosk = await Kiosks.findOne({ where: { id } });
-        const {teltonikaRemoteAccessId, teltonikaHost, useTeltonika} = kiosk;
-        if (!teltonikaRemoteAccessId) {
-            return res.json({ message: 'Remote Access ID is empty', error: true });
-        }
-        let responce;
-        let opStatus;
-        try {
-            const { body } = await kioskAdapter.getStatus(teltonikaHost);
-            responce = body;
-        } catch (err) {
-            // after internet conection restoring teltonikaHost should re-created
-            opStatus = 'fail';
-        }
-        if ('fail' === opStatus) {
-            const resTel = await getTeltonikaHost(id, teltonikaRemoteAccessId);
-            if (resTel.code && resTel.code === 1) {
-                return res.json({ message: resTel.message, error: true});
-            }
-            if (resTel.code && resTel.code === 2) {
-                return res.json({ message: resTel.message, error: true});
-            }
-            const { body } = await kioskAdapter.getStatus(teltonikaHost);
-            responce = body;
-        }
-        responce.message = 'successfully connected';
-        return res.json(responce);
-    } catch (err) {
-        return res.json({ message: 'No connection with device', error: true });
-    }
-};
-
-module.exports.door = async (req, res) => {
-    const ip = req.query.ip;
-    const { isValid, errors } = isSchemeValidSync(deviceValidator.get, { ip });
-    if (!isValid) {
-        log.error(errors, 'device::controller::getDoorStatus');
-        return res.status(400).json({ message: 'validation failed' });
-    }
-    const data = await kioskAdapter.getDoorLockStatus(ip);
-    return res.json(data);
-};
-
-module.exports.setStatus = async (req, res) => {
-    const { ip, lock } = req.query.ip;
-    const { isValid, errors } = isSchemeValidSync(deviceValidator.setStatus, { ip, lock });
-    if (!isValid) {
-        log.error(errors, 'device::setStatus');
-        return res.status(400).json({ message: 'validation failed' });
-    }
-    const data = await kioskAdapter.setLock(ip, lock);
-    return res.json(data);
-};
 
 const closeSession = async (id, kioskSessionsId) => {
     await Kiosks.update({ isDoorOpened: false }, { where: { id } });
     await KioskSessions.update({ isSessionOpen: false }, { where: { id: kioskSessionsId } });
 };
 
+/**
+ * @swagger
+ * /mobile/device/opendoor/{id}:
+ *   put:
+ *     tags:
+ *       - Private - Device
+ *     summary: Open door
+ *     description: ''
+ *     parameters:
+ *      - in: path
+ *        name: id
+ *        description: Kiosk ID
+ *        required: true
+ *        type: number
+ *     produces:
+ *      - application/json
+ *     responses:
+ *       '200':
+ *         description: Successful operation
+ *     security:
+ *      - bearerAuth: []
+ */
 module.exports.openDoor = async (req, res) => {
     try {
         const id = Number(req.params.id);
-        const { isValid, errors } = isSchemeValidSync(deviceValidator.openDoor, { id });
-        if (!isValid) {
-            log.error(errors, 'device::openDoor::validation');
-            return res.status(400).json({ message: 'validation failed' });
+        try {
+            await isSchemeValid(deviceValidator.openDoor, { id });
+        } catch (err) {
+            loggerValidations.error(err, 'device::openDoor::validation');
+            return res.status(400).json({ err, message: 'validation error' });
         }
         const kiosk = await Kiosks.findOne({ where: { id } });
-        const {ip, teltonikaRemoteAccessId, teltonikaHost, useTeltonika, useSocket} = kiosk;
+        const { ip, teltonikaRemoteAccessId, teltonikaHost, useTeltonika, useSocket } = kiosk;
         const sessionData = {
             kioskId: id,
             isSessionOpen: true,
@@ -101,7 +57,7 @@ module.exports.openDoor = async (req, res) => {
             kioskName: kiosk.displayName,
             serviceProviderId: kiosk.serviceProviderId
         };
-        sessionData.userId = req.user.id;
+        sessionData.consumerId = req.user.id;
         const { id: kioskSessionsId } = await KioskSessions.create(sessionData);
         const lastActivity = sessionData.startDate;
         if (lastActivity) {
@@ -117,13 +73,23 @@ module.exports.openDoor = async (req, res) => {
         let opStatus;
         if (useSocket) {
             try {
-                const res = await deviceManger.openDoor(id);
+                const consumer = await Consumers.findOne({ where: { id: req.user.id } });
+                const res = await Got.put('http://localhost:4000/api/mobile/device/opendoor', {
+                    headers: {
+                        authorization: req.headers.authorization,
+                    },
+                    json: {
+                        kioskId: id,
+                        firebaseRegistrationToken: consumer.firebaseRegistrationToken
+                    },
+                    responseType: 'json'
+                }).json();
                 if (res.success) {
                     opStatus = 'pass';
                 } else {
                     opStatus = 'fail';
                 }
-            } catch(err) {
+            } catch (err) {
                 // TODO handle error
             }
         } else if (useTeltonika) {
@@ -140,12 +106,15 @@ module.exports.openDoor = async (req, res) => {
                     const { body: { operationStatus } } = await kioskAdapter.setDoorUnLock(res.teltonikaHost, kioskSessionsId);
                     opStatus = operationStatus;
                 }
+            } else {
+                return res.status(400).json({ message: 'Kiosk open door fail' });
             }
         } else if (ip) {
             const { body: { operationStatus } } = await kioskAdapter.setDoorUnLock(ip, kioskSessionsId);
             opStatus = operationStatus;
+        } else {
+            return res.status(400).json({ message: 'Kiosk open door fail' });
         }
-
         if ('pass' === opStatus) {
             await Kiosks.update({ isDoorOpened: true }, { where: { id } });
             setTimeout(closeSession, 10000, id, kioskSessionsId);
@@ -155,29 +124,7 @@ module.exports.openDoor = async (req, res) => {
         }
         return res.json({ kioskSessionsId });
     } catch (error) {
-        log.error(error, 'device::controller::openDoor');
-        return res.status(400).json({ message: 'Kiosk open door fail' });
-    }
-};
-
-module.exports.getVideo = async (req, res) => {
-    try {
-        const { videoId, sessionId } = req.query;
-        const { isValid, errors } = isSchemeValidSync(deviceValidator.getVideo, { sessionId, videoId });
-        if (!isValid) {
-            log.error(errors, 'device::controller::getVideo::validation');
-            return res.status(400).json({ message: 'validation failed' });
-        }
-        await Ivideon.initializeTokens();
-        let publicUrl = null;
-        const { body: { result: { clip } = {}, ...rest } = {} } = await Ivideon.getEvent(videoId) || {};
-        if (clip) {
-            await KioskSessions.update({ clip }, { where: { id: sessionId } });
-            publicUrl = await Ivideon.getPublicURL(clip);
-        }
-        return res.json({ success: true, clip: publicUrl });
-    } catch (error) {
-        log.error(error, 'device::getVideo::server error');
-        return res.status(500).json({ error, success: false });
+        log.error(error, 'device::openDoor');
+        return res.status(500).json({ message: 'Kiosk open door fail' });
     }
 };

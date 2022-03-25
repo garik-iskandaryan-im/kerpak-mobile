@@ -9,7 +9,7 @@ const saltRounds = 10;
  */
 module.exports.hash = (string) => {
     return bcrypt.hash(string, saltRounds)
-        .then(function(hash) {
+        .then(function (hash) {
             return hash;
         });
 };
@@ -21,13 +21,4 @@ module.exports.hash = (string) => {
  */
 module.exports.compare = (string, hash) => {
     return bcrypt.compare(string, hash);
-};
-
-module.exports.isPasswordFromList = async (string, userPasswords) => {
-    for(let i = 0, length = userPasswords.length; i < length; i++) {
-        if(await bcrypt.compare(string, userPasswords[i])) {
-            return true;
-        }
-    }
-    return false;
 };

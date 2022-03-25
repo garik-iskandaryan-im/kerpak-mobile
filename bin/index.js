@@ -7,10 +7,6 @@ const settings = require('../app/settings');
 
 const app = require('../app/app');
 const models = require('../app/models/models');
-const DBMigration = require('../app/migrations');
-const io = require('../app/deviceManager/socket.js');
-const socketTrafficSaving = require('../app/deviceManager/socketTrafficSaving.js');
-const deviceManger = require('../app/deviceManager/deviceManager.js');
 
 /**
  * Get port and store in express
@@ -20,12 +16,8 @@ const port = normalizePort(settings.server.port || 3000);
 app.set('port', port);
 
 const server = http.createServer(app);
-io.init(server);
-socketTrafficSaving.init(server);
-deviceManger.init();
 
 models.sequelize.sync()
-    .then(() => new DBMigration(models.sequelize, app.get('logger')).migrate())
     .then(() => {
         server.listen(port);
         server.on('error', onError);

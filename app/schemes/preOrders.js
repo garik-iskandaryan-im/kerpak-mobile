@@ -34,20 +34,6 @@ module.exports = {
         required: ['kioskId', 'expectedDeliveryDate', 'productItems'],
         additionalProperties: false
     },
-    removeFromTransfer: {
-        properties: {
-            transferId: {
-                type: 'number'
-            },
-            preOrdersList: {
-                type: 'array',
-                items: {
-                    type: 'number',
-                }
-            }
-        },
-        required: ['transferId', 'preOrdersList']
-    },
     pay: {
         properties: {
             code: {
@@ -63,24 +49,6 @@ module.exports = {
         required: ['code', 'kioskId', 'sessionId'],
         additionalProperties: false
     },
-    cancelPreOrder: {
-        properties: {
-            declineReason: {
-                type: 'string'
-            },
-        },
-        required: ['declineReason'],
-        additionalProperties: false
-    },
-    acceptPreOrder: {
-        properties: {
-            productionDate: {
-                type: 'string'
-            },
-        },
-        required: ['productionDate'],
-        additionalProperties: false
-    },
     customerCancel: {
         properties: {
             declineReason: {
@@ -88,27 +56,6 @@ module.exports = {
             },
         },
         required: ['declineReason'],
-        additionalProperties: false
-    },
-    changeKiosk: {
-        properties: {
-            kioskId: {
-                type: 'number'
-            },
-        },
-        required: ['kioskId'],
-        additionalProperties: false
-    },
-    changeExpectedDeliveryDate: {
-        properties: {
-            expectedDeliveryDate: {
-                type: 'string'
-            },
-            transferTimeFrom: {
-                type: 'string'
-            },
-        },
-        required: ['expectedDeliveryDate', 'transferTimeFrom'],
         additionalProperties: false
     },
 };

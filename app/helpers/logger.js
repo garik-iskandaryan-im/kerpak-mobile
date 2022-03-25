@@ -17,12 +17,12 @@ module.exports.use = (logger) => {
 module.exports.info = (...args) => {
     return new Promise((resolve, reject) => {
         try {
-            if(log.info) {
+            if (log.info) {
                 log.info(...args);
             }
             return resolve();
         }
-        catch(err) {
+        catch (err) {
             return reject(err);
         }
     });
@@ -35,12 +35,12 @@ module.exports.info = (...args) => {
 module.exports.debug = (...args) => {
     return new Promise((resolve, reject) => {
         try {
-            if(log.debug) {
+            if (log.debug) {
                 log.debug(...args);
             }
             return resolve();
         }
-        catch(err) {
+        catch (err) {
             return reject(err);
         }
     });
@@ -53,12 +53,12 @@ module.exports.debug = (...args) => {
 module.exports.warn = (...args) => {
     return new Promise((resolve, reject) => {
         try {
-            if(log.warn) {
+            if (log.warn) {
                 log.warn(...args);
             }
             return resolve();
         }
-        catch(err) {
+        catch (err) {
             return reject(err);
         }
     });
@@ -71,12 +71,12 @@ module.exports.warn = (...args) => {
 module.exports.error = (...args) => {
     return new Promise((resolve, reject) => {
         try {
-            if(log.error) {
+            if (log.error) {
                 log.error(...args);
             }
             return resolve();
         }
-        catch(err) {
+        catch (err) {
             return reject(err);
         }
     });

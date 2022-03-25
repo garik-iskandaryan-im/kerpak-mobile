@@ -3,7 +3,7 @@ require('dotenv').config();
 module.exports = {
     env: process.env.NODE_ENV,
     server: {
-        port: 4000
+        port: 4001
     },
     auth: {
         verificationCodeLength: 10000,
@@ -15,17 +15,6 @@ module.exports = {
         database: process.env.DATABASE_NAME || 'kerpak',
         username: process.env.DATABASE_USERNAME || 'root',
         password: process.env.DATABASE_PASSWORD || 'root'
-    },
-    cookies: {
-        guid: {
-            name: 'ld_guid',
-            maxAge: 63072000000, // 2 years
-            httpOnly: false
-        },
-        sessionID: {
-            name: 'ld_session_id',
-            maxAge: 50400000, // 14 hours
-        }
     },
     jwt: {
         jwt: {
@@ -49,9 +38,6 @@ module.exports = {
                 register: {
                     expiration: 604800 /*7 days (in seconds)*/
                 },
-                mcAuth: {
-                    expiration: 172800 /*2 days (in seconds)*/
-                }
             }
         },
         secrets: {
@@ -104,8 +90,6 @@ module.exports = {
             KERPAK_ID_BANK_BANK_PASSWORD: process.env.KERPAK_ID_BANK_BANK_PASSWORD,
             KERPAK_ID_BANK_BANK_BINDING_USER_NAME: process.env.KERPAK_ID_BANK_BANK_BINDING_USER_NAME,
             KERPAK_ID_BANK_BANK_BINDING_PASSWORD: process.env.KERPAK_ID_BANK_BANK_BINDING_PASSWORD,
-            SARYAN_ID_BANK_BANK_BINDING_USER_NAME: process.env.SARYAN_ID_BANK_BANK_BINDING_USER_NAME,
-            SARYAN_ID_BANK_BANK_BINDING_PASSWORD: process.env.SARYAN_ID_BANK_BANK_BINDING_PASSWORD,
             REQUEST_TO_BANK_WAITING_TIME: Number(process.env.REQUEST_TO_BANK_WAITING_TIME)
         },
         stripe: {
@@ -147,9 +131,6 @@ module.exports = {
     s3: {
         KEY: process.env.S3_KEY,
         SECRET: process.env.S3_SECRET,
-        REGION: process.env.S3_REGION,
-        BUKET: process.env.S3_BUKET,
-        LOCATION: process.env.S3_LOCATION,
         SES: {
             REGION: process.env.S3_SES_REGION,
             SOURCE: process.env.S3_SES_SOURCE,
@@ -161,16 +142,6 @@ module.exports = {
         IVIDEON_OAUTH_URL: process.env.IVIDEON_OAUTH_URL,
         USERNAME: process.env.IVIDEON_USERNAME,
         PASSWORD: process.env.IVIDEON_PASSWORD,
-    },
-    domains: {
-        sendEmailDomain: process.env.EMAIL_DOMAIN,
-    },
-    client: {
-        privateKeyPath: process.env.CLIENT_PRIVATE_KEY_PATH,
-        secret: process.env.CLIENT_SECRET,
-    },
-    firebase: {
-        key: process.env.FIREBASE_KEY
     },
     paths: {
         preOrderDetails: process.env.PRE_ORDER_LINK
@@ -184,17 +155,8 @@ module.exports = {
         SINGLE_USER_lIMIT: process.env.SMS_SINGLE_USER_lIMIT,
         DAY_LIMIT: process.env.SMS_DAY_LIMIT
     },
-    imageConfigs: {
-        ALLOWED_MAX_IMAGE_SIZE: process.env.ALLOWED_MAX_IMAGE_SIZE
-    },
     IPINFO: {
         TOKEN: process.env.IPINFO_TOKEN
-    },
-    TRAFFIC_SAVING: {
-        INTERVAL: process.env.TRAFFIC_SAVING_INTERVAL,
-        TIMEOUT: process.env.TRAFFIC_SAVING_TIMEOUT,
-        INTERVAL_TEMPERATURE: process.env.TRAFFIC_SAVING_INTERVAL_TEMPERATURE,
-        INTERVAL_DOOR: process.env.TRAFFIC_SAVING_INTERVAL_DOOR,
     },
     COFFEEMACHINE: {
         ID: process.env.COFFEEMACHINE_ID,

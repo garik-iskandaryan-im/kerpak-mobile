@@ -1,12 +1,4 @@
-const CONSTANTS = require('app/constants');
-
 module.exports = {
-    get: {
-        properties: {
-            id: { type: 'string' }
-        },
-        required: ['id']
-    },
     create: {
         properties: {
             phone: {
@@ -44,29 +36,6 @@ module.exports = {
             }
         },
         required: [],
-        additionalProperties: false
-    },
-    addBalance: {
-        properties: {
-            balance: { type:'number'},
-            balanceType: {type: 'string', enum: CONSTANTS.BALANCE_TYPE},
-        },
-        required: ['balance', 'balanceType'],
-        additionalProperties: false
-    },
-    bulkAddBalance: {
-        properties: {
-            balance: { type:'number'},
-            balanceType: {
-                type: 'string',
-                enum: CONSTANTS.BALANCE_TYPE
-            },
-            ids: {
-                type: 'array',
-                items: [{type: 'number'}]
-            }
-        },
-        required: ['balance', 'balanceType', 'ids'],
         additionalProperties: false
     }
 };

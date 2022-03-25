@@ -7,7 +7,7 @@ const smsInstance = new AWS.SNS({
     secretAccessKey: SNS.SECRET,
     accessKeyId: SNS.KEY,
     region: SNS.REGION
-}); 
+});
 
 const send = (phone, message) => {
     const params = {
@@ -15,13 +15,13 @@ const send = (phone, message) => {
         PhoneNumber: phone
     };
     const publishTextPromise = smsInstance.publish(params).promise();
-    publishTextPromise.then(function(data) {
-        log.info("MessageID is " + data.MessageId, 'AWS::SNS::SMS');
-    }).catch(function(err) {
+    publishTextPromise.then(function (data) {
+        log.info('MessageID is ' + data.MessageId, 'AWS::SNS::SMS');
+    }).catch(function (err) {
         log.error(err, 'AWS::SNS::SMS');
     });
-}
-  
+};
+
 module.exports = {
     send
 };

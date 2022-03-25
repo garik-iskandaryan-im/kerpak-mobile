@@ -15,6 +15,5 @@ const send = async (to, body) => {
 
 module.exports = {
     send,
-    compileMessage,
-    client
+    compileMessage
 };

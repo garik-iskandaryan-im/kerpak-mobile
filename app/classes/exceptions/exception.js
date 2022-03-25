@@ -3,7 +3,7 @@
 class Exception {
 
     constructor(error) {
-        if(! error) {
+        if (!error) {
             error = {};
         }
 

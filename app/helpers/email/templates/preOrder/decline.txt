@@ -1,0 +1,9 @@
+Dear partner, 
+
+Delivery order for {kioskName} was canceled by the customer. 
+
+See order {link} details.
+
+
+
+This is an automated email from Kerpak. If you’d like to contact us, please email us at support@kerpaktech.com or contact your organization’s account manager directly. 
