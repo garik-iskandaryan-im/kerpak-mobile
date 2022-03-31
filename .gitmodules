@@ -1,0 +1,4 @@
+[submodule "app/models"]
+	path = app/models
+	url = https://github.com/InstigateMobile/kerpak-app-models.git
+	branch = test
